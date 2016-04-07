@@ -61,6 +61,8 @@ def _gcs_file_storage_settings():
             raise ImproperlyConfigured("Either GAPC_STORAGE[bucket] or env var GCS_BUCKET need to be set.")
     config.setdefault("bucket", SimpleLazyObject(default_bucket))
 
+    config.setdefault("path_prefix", "")
+
     return config
 
 
@@ -72,12 +74,11 @@ class GoogleCloudStorage(Storage):
     makes no assumptions about your environment and can be used anywhere.
     """
 
-    path_prefix = ""
-
     def __init__(self):
         self.set_client()
-        self.bucket = _gcs_file_storage_settings()["bucket"]
-        self.path_prefix = self.path_prefix.lstrip("/")
+        config = _gcs_file_storage_settings()
+        self.bucket = config["bucket"]
+        self.path_prefix = self.path_prefix or config["path_prefix"]
 
     def set_client(self):
         credentials = self.get_oauth_credentials()
