@@ -100,13 +100,16 @@ class GoogleCloudStorage(Storage):
         """
         return safe_join(self.path_prefix, name)
 
-    def get_gcs_object(self, name):
+    def get_gcs_object(self, name, ensure=True):
         req = self.client.objects().get(bucket=self.bucket, object=self._prefixed_name(name))
         try:
             return req.execute()
         except HttpError as exc:
             if exc.resp["status"] == "404":
-                return None
+                if ensure:
+                    raise IOError('object "{}/{}" does not exist'.format(self.bucket, self._prefixed_name(name)))
+                else:
+                    return None
             raise
 
     def _open_io(self):
@@ -149,7 +152,7 @@ class GoogleCloudStorage(Storage):
             raise
 
     def exists(self, name):
-        return self.get_gcs_object(self._prefixed_name(name)) is not None
+        return self.get_gcs_object(self._prefixed_name(name, ensure=False)) is not None
 
     def size(self, name):
         return int(self.get_gcs_object(self._prefixed_name(name))["size"])
