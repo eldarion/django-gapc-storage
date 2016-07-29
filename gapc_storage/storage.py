@@ -152,7 +152,7 @@ class GoogleCloudStorage(Storage):
             raise
 
     def exists(self, name):
-        return self.get_gcs_object(self._prefixed_name(name, ensure=False)) is not None
+        return self.get_gcs_object(self._prefixed_name(name), ensure=False) is not None
 
     def size(self, name):
         return int(self.get_gcs_object(self._prefixed_name(name))["size"])
