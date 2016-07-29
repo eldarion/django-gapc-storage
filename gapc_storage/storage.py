@@ -78,7 +78,7 @@ class GoogleCloudStorage(Storage):
         self.set_client()
         config = _gcs_file_storage_settings()
         self.bucket = config["bucket"]
-        self.path_prefix = self.path_prefix or config["path_prefix"]
+        self.path_prefix = self.path_prefix if hasattr(self, "path_prefix") else config["path_prefix"]
 
     def set_client(self):
         credentials = self.get_oauth_credentials()
