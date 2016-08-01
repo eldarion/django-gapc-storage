@@ -8,7 +8,11 @@ from django.core.files.storage import Storage
 from django.utils.encoding import force_text
 from django.utils.functional import SimpleLazyObject
 from django.utils.http import urlquote
-from django.utils.six.moves.urllib import parse as urlparse
+
+try:
+    from django.utils.six.moves.urllib import parse as urlparse
+except:
+    import urlparse
 
 import dateutil.parser
 import httplib2
