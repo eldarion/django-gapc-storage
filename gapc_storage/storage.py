@@ -128,8 +128,14 @@ class GoogleCloudStorage(Storage):
         buf = self._open_io()
         media = MediaIoBaseDownload(buf, req)
         done = False
-        while not done:
-            done = media.next_chunk()[1]
+        try:
+            while not done:
+                done = media.next_chunk()[1]
+        except HttpError as exc:
+            if exc.resp["status"] == "404":
+                raise IOError('object "{}/{}" does not exist'.format(self.bucket, self._prefixed_name(name)))
+            else:
+                raise IOError("unknown HTTP error: {}".format(exc))
         buf.seek(0)
         return buf
 
