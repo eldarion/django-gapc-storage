@@ -1,6 +1,7 @@
 import io
 import mimetypes
 import os
+import threading
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -75,15 +76,21 @@ class GoogleCloudStorage(Storage):
     """
 
     def __init__(self):
-        self.set_client()
+        self.thread = threading.local()
         config = _gcs_file_storage_settings()
         self.bucket = config["bucket"]
         self.path_prefix = self.path_prefix if hasattr(self, "path_prefix") else config["path_prefix"]
 
-    def set_client(self):
+    def build_client(self):
         credentials = self.get_oauth_credentials()
         http = credentials.authorize(httplib2.Http())
-        self.client = discovery_build("storage", "v1", http=http)
+        return discovery_build("storage", "v1", http=http)
+
+    @property
+    def client(self):
+        if not hasattr(self.thread, "client"):
+            self.thread.client = self.build_client()
+        return self.thread.client
 
     def get_oauth_credentials(self):
         return self.create_scoped(GoogleCredentials.get_application_default())
