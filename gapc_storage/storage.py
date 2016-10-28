@@ -165,10 +165,10 @@ class GoogleCloudStorage(Storage):
             raise
 
     def exists(self, name):
-        return self.get_gcs_object(self._prefixed_name(name), ensure=False) is not None
+        return self.get_gcs_object(name, ensure=False) is not None
 
     def size(self, name):
-        return int(self.get_gcs_object(self._prefixed_name(name))["size"])
+        return int(self.get_gcs_object(name)["size"])
 
     def url(self, name):
         url_template = _gcs_file_storage_settings().get(
