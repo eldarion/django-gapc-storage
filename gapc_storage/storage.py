@@ -20,6 +20,10 @@ from googleapiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 from oauth2client.client import GoogleCredentials
 
 
+GCS_PUBLIC_READ_CACHE_DEFAULT = "public, max-age=3600"
+GCS_PUBLIC_READ_CACHE_DISABLED = "private, max-age=0"
+
+
 def safe_join(base, *paths):
     """
     A version of django.utils._os.safe_join for GCS paths.
@@ -64,6 +68,7 @@ def _gcs_file_storage_settings():
 
     config.setdefault("path_prefix", "")
     config.setdefault("allow_overwrite", False)
+    config.setdefault("cache_control", GCS_PUBLIC_READ_CACHE_DEFAULT)
 
     return config
 
@@ -82,6 +87,7 @@ class GoogleCloudStorage(Storage):
         self.bucket = config["bucket"]
         self.path_prefix = self.path_prefix if hasattr(self, "path_prefix") else config["path_prefix"]
         self.allow_overwrite = self.allow_overwrite if hasattr(self, "allow_overwrite") else config["allow_overwrite"]
+        self.cache_control = self.cache_control if hasattr(self, "cache_control") else config["cache_control"]
 
     def build_client(self):
         credentials = self.get_oauth_credentials()
@@ -153,7 +159,14 @@ class GoogleCloudStorage(Storage):
         if mimetype is None:
             mimetype = "application/octet-stream"
         media = MediaIoBaseUpload(content, mimetype)
-        req = self.client.objects().insert(bucket=self.bucket, name=self._prefixed_name(name), media_body=media)
+        req = self.client.objects().insert(
+            bucket=self.bucket,
+            name=self._prefixed_name(name),
+            body={
+                "cacheControl": self.cache_control
+            },
+            media_body=media
+        )
         req.execute()
         return name
 
