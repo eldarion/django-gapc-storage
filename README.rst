@@ -43,7 +43,7 @@ the same name.
 Default: ``os.environ["GCS_BUCKET"]``
 
 ``GPAC_STORAGE["cache_control"]``
-===================================
+=================================
 
 Default: ``public, max-age=3600``
 
