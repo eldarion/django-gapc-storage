@@ -63,6 +63,7 @@ def _gcs_file_storage_settings():
     config.setdefault("bucket", SimpleLazyObject(default_bucket))
 
     config.setdefault("path_prefix", "")
+    config.setdefault("allow_overwrite", False)
 
     return config
 
@@ -80,6 +81,7 @@ class GoogleCloudStorage(Storage):
         config = _gcs_file_storage_settings()
         self.bucket = config["bucket"]
         self.path_prefix = self.path_prefix if hasattr(self, "path_prefix") else config["path_prefix"]
+        self.allow_overwrite = self.allow_overwrite if hasattr(self, "allow_overwrite") else config["allow_overwrite"]
 
     def build_client(self):
         credentials = self.get_oauth_credentials()
@@ -184,3 +186,8 @@ class GoogleCloudStorage(Storage):
 
     def modified_time(self, name):
         return dateutil.parser.parse(self.get_gcs_object(name)["updated"])
+
+    def get_available_name(self, name, max_length=None):
+        if self.allow_overwrite:
+            return name
+        return super(GoogleCloudStorage, self).get_available_name(name, max_length)
