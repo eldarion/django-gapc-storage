@@ -79,6 +79,15 @@ class GCSFile(File):
     A file returned from Google Cloud Storage
     """
 
+    def __init__(self, file, name, storage):
+        super(GCSFile, self).__init__(file, name)
+        self._storage = storage
+
+    def open(self, mode=None):
+        if self.closed:
+            self.file = self._storage.open(self.name, mode or "rb").file
+        return super(GCSFile, self).open(mode)
+
 
 class GoogleCloudStorage(Storage):
     """
