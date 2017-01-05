@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.3.1
+* allow closed files to be reopened ([#12](https://github.com/eldarion/django-gapc-storage/pull/12))
+
 ## 0.3.0
 * added the ability to override object Cache-Control metadata ([#7](https://github.com/eldarion/django-gapc-storage/pull/7))
 * added the ability to overwrite an existing object on save ([#8](https://github.com/eldarion/django-gapc-storage/pull/8))
