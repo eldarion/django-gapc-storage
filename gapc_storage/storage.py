@@ -5,6 +5,7 @@ import threading
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.core.files.base import File
 from django.core.files.storage import Storage
 from django.utils.encoding import force_text
 from django.utils.functional import SimpleLazyObject
@@ -71,6 +72,21 @@ def _gcs_file_storage_settings():
     config.setdefault("cache_control", GCS_PUBLIC_READ_CACHE_DEFAULT)
 
     return config
+
+
+class GCSFile(File):
+    """
+    A file returned from Google Cloud Storage
+    """
+
+    def __init__(self, file, name, storage):
+        super(GCSFile, self).__init__(file, name)
+        self._storage = storage
+
+    def open(self, mode=None):
+        if self.closed:
+            self.file = self._storage.open(self.name, mode or "rb").file
+        return super(GCSFile, self).open(mode)
 
 
 class GoogleCloudStorage(Storage):
@@ -152,7 +168,7 @@ class GoogleCloudStorage(Storage):
             else:
                 raise IOError("unknown HTTP error: {}".format(exc))
         buf.seek(0)
-        return buf
+        return GCSFile(buf, name, self)
 
     def _save(self, name, content):
         mimetype, _ = mimetypes.guess_type(os.path.basename(name))
