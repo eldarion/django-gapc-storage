@@ -25,6 +25,7 @@ Settings can be customized via the `GAPC_STORAGE` settings dict::
         "allow_overwrite": False,
         "bucket": "my-bucket",
         "cache_control": "public, max-age=3600",
+        "num_retries": 0,
         "path_prefix": "",
     }
 
@@ -50,6 +51,15 @@ Default: ``public, max-age=3600``
 By default, public-readable objects on GCS have a cache duration of 60
 minutes.  Set ``cache_control`` to ``private, max-age=0`` to disable
 public caching of objects saved by the storage backend.
+
+``GAPC_STORAGE["num_retries"]``
+===============================
+
+Default: ``0``
+
+Passed to the supported methods on the underlying google-api-python-client client which will retry 500 error responses with randomized exponential backoff.
+
+For more information, see the [google-api-python-client documetation](http://google.github.io/google-api-python-client/docs/epy/googleapiclient.http.HttpRequest-class.html#execute
 
 ``GAPC_STORAGE["path_prefix"]``
 ===============================
