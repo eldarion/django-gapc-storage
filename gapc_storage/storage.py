@@ -70,6 +70,7 @@ def _gcs_file_storage_settings():
     config.setdefault("bucket", SimpleLazyObject(default_bucket))
     config.setdefault("cache_control", GCS_PUBLIC_READ_CACHE_DEFAULT)
     config.setdefault("path_prefix", "")
+    config.setdefault("num_retries", 0)
 
     return config
 
@@ -134,7 +135,7 @@ class GoogleCloudStorage(Storage):
     def get_gcs_object(self, name, ensure=True):
         req = self.client.objects().get(bucket=self.bucket, object=self._prefixed_name(name))
         try:
-            return req.execute()
+            return req.execute(num_retries=self.num_retries)
         except HttpError as exc:
             if exc.resp["status"] == "404":
                 if ensure:
@@ -161,7 +162,7 @@ class GoogleCloudStorage(Storage):
         done = False
         try:
             while not done:
-                done = media.next_chunk()[1]
+                done = media.next_chunk(num_retries=self.num_retries)[1]
         except HttpError as exc:
             if exc.resp["status"] == "404":
                 raise IOError('object "{}/{}" does not exist'.format(self.bucket, self._prefixed_name(name)))
@@ -183,13 +184,13 @@ class GoogleCloudStorage(Storage):
             },
             media_body=media
         )
-        req.execute()
+        req.execute(num_retries=self.num_retries)
         return name
 
     def delete(self, name):
         req = self.client.objects().delete(bucket=self.bucket, object=self._prefixed_name(name))
         try:
-            return req.execute()
+            return req.execute(num_retries=self.num_retries)
         except HttpError as exc:
             if exc.resp["status"] == "404":
                 return
