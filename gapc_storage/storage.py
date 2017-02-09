@@ -65,11 +65,11 @@ def _gcs_file_storage_settings():
             return os.environ["GCS_BUCKET"]
         except KeyError:
             raise ImproperlyConfigured("Either GAPC_STORAGE[bucket] or env var GCS_BUCKET need to be set.")
-    config.setdefault("bucket", SimpleLazyObject(default_bucket))
 
-    config.setdefault("path_prefix", "")
     config.setdefault("allow_overwrite", False)
+    config.setdefault("bucket", SimpleLazyObject(default_bucket))
     config.setdefault("cache_control", GCS_PUBLIC_READ_CACHE_DEFAULT)
+    config.setdefault("path_prefix", "")
 
     return config
 
