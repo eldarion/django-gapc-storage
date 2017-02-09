@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [0.4.0] - 2017-02-09
+
+### Added
+
+* configure [`num_retries`](https://github.com/eldarion/django-gapc-storage/blob/ce15daca2026357cea9011c8c4a838d4719c8abe/README.rst#gapc_storagenum_retries)
+
 ### Fixed
 
 * documentation updated with correct spelling of settings
