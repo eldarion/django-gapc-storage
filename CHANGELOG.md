@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+### Fixed
+
+* documentation updated with correct spelling of settings
+
 ## [0.3.1] - 2017-01-05
 
 ### Fixed
