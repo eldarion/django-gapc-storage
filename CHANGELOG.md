@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [0.4.1] - 2017-09-06
+
+### Fixed
+
+* fix hyperlink to google-api-python-client in documentation 
+* fix `num_retries` attribute error ([#17](https://github.com/eldarion/django-gapc-storage/pull/17))
+
 ## [0.4.0] - 2017-02-09
 
 ### Added
