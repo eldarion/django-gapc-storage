@@ -29,6 +29,11 @@ Settings can be customized via the `GAPC_STORAGE` settings dict::
         "path_prefix": "",
     }
 
+Authentication
+==============
+
+See [Google Identity Platform Application Default Credentials Documentation](https://developers.google.com/identity/protocols/application-default-credentials)
+
 
 ``GAPC_STORAGE["allow_overwrite"]``
 ===================================
