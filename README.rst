@@ -59,7 +59,8 @@ Default: ``0``
 
 Passed to the supported methods on the underlying google-api-python-client client which will retry 500 error responses with randomized exponential backoff.
 
-For more information, see the [google-api-python-client documetation](http://google.github.io/google-api-python-client/docs/epy/googleapiclient.http.HttpRequest-class.html#execute
+For more information, see the `google-api-python-client documetation 
+<http://google.github.io/google-api-python-client/docs/epy/googleapiclient.http.HttpRequest-class.html#execute>`_.
 
 ``GAPC_STORAGE["path_prefix"]``
 ===============================
