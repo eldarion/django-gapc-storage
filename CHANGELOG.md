@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [0.5.0] - 2018-06-05
+
+### Fixed
+- Pin `google-api-python-client` version and explicitly require `oauth2client`
+
 ## [0.4.1] - 2017-09-06
 
 ### Fixed
