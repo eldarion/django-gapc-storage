@@ -12,7 +12,8 @@ setup(
     url="http://github.com/eldarion/django-gapc-storage",
     packages=find_packages(),
     install_requires=[
-        "google-api-python-client>=1.5.0",
+        "google-api-python-client>=1.5.0<=1.7",
+        "oauth2client",
         "python-dateutil",
     ],
     classifiers=[
