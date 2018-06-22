@@ -222,3 +222,12 @@ class GoogleCloudStorage(Storage):
         if self.allow_overwrite:
             return name
         return super(GoogleCloudStorage, self).get_available_name(name, max_length)
+
+    def listdir(self, path):
+        req = self.client.objects().list(bucket=self.bucket, delimiter="/", prefix=path)
+        result = req.execute(num_retries=self.num_retries)
+        directories, files = [], []
+        directories.extend(result.get("prefixes", []))
+        for obj in result.get("items", []):
+            files.append(obj["name"].replace(path, ""))
+        return directories, files
