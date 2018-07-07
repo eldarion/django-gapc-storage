@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [0.5.1] - 2018-07-07
+
+### Fixed
+- Fix pin syntax in setup.py for `google-api-python-client`
+
 ## [0.5.0] - 2018-06-05
 
 ### Fixed
@@ -15,7 +20,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 
-* fix hyperlink to google-api-python-client in documentation 
+* fix hyperlink to google-api-python-client in documentation
 * fix `num_retries` attribute error ([#17](https://github.com/eldarion/django-gapc-storage/pull/17))
 
 ## [0.4.0] - 2017-02-09
