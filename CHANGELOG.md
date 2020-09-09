@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-## [0.5.3] - 2020-09-08
+## [0.5.2] - 2020-09-08
 - Fix 'ImportError: file_cache is unavailable when using oauth2client >= 4.0.0 or google-auth'
 warning by disabling cache_discovery
 - Change dependency to google-api-python-client 1.11
