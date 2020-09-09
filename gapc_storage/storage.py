@@ -110,7 +110,8 @@ class GoogleCloudStorage(Storage):
     def build_client(self):
         credentials = self.get_oauth_credentials()
         http = credentials.authorize(httplib2.Http())
-        return discovery_build("storage", "v1", http=http)
+        # cache_discovery=False prevents 'ImportError: file_cache is unavailable when using oauth2client >= 4.0.0 or google-auth'
+        return discovery_build("storage", "v1", http=http, cache_discovery=False)
 
     @property
     def client(self):
