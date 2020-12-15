@@ -10,7 +10,12 @@ from django.core.files.storage import Storage
 from django.utils.encoding import force_text
 from django.utils.functional import SimpleLazyObject
 from django.utils.http import urlquote
-from django.utils.six.moves.urllib import parse as urlparse
+try:
+    # Django <= 2.x
+    from django.utils.six.moves.urllib import parse as urlparse
+except ImportError:
+    # Django >= 3.x
+    from six.moves.urllib import parse as urlparse
 
 import dateutil.parser
 import httplib2
